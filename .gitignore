@@ -127,3 +127,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+yolo_detection/yolov3_training_2000.weights
