@@ -19,6 +19,8 @@ class UploadUtility(activity: Activity) {
     var dialog: ProgressDialog? = null
     var serverURL: String = "http://localhost:8080/upload"
     var serverUploadDirectoryPath: String = "http://localhost:8080/uploads"
+//    var serverURL: String = "https://handyopinion.com/tutorials/UploadToServer.php"
+//    var serverUploadDirectoryPath: String = "https://handyopinion.com/tutorials/uploads/"
     val client = OkHttpClient()
 
     fun uploadFile(sourceFilePath: String, uploadedFileName: String? = null) {

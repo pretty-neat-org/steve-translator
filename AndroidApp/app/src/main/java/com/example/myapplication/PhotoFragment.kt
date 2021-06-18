@@ -30,8 +30,9 @@ class PhotoFragment : Fragment(R.layout.fragment_photo) {
     private val PICK_IMAGE = 1
     private val TAKE_PHOTO = 2
     private var currentPhotoPath: String = ""
-    internal var imageUploadURL = "http://localhost:8080/upload"
+    private lateinit var currPhotoURI: Uri
 
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         btn_change_photo.setOnClickListener {
@@ -46,14 +47,21 @@ class PhotoFragment : Fragment(R.layout.fragment_photo) {
                 }
                 .show()
         }
-//        btn_translate.setOnClickListener {
-//
-//
-//
-//        }
+        btn_translate.setOnClickListener {
+
+            upload()
+
+        }
     }
 
-
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    fun upload(){
+        if (currPhotoURI != null) {
+//            val myFile = File(currentPhotoPath as String)
+//            val imgUri = Uri.fromFile(myFile)
+            UploadUtility((activity as MainActivity?)!!).uploadFile(currPhotoURI) // Either Uri, File or String file path
+        }
+    }
 
     private fun pickPhoto(code: Int) {
         Intent(
@@ -94,6 +102,7 @@ class PhotoFragment : Fragment(R.layout.fragment_photo) {
             Glide.with(it)
                 .load(uri).circleCrop()
                 .into(iv_photo)
+            currPhotoURI = uri
         }
     }
 

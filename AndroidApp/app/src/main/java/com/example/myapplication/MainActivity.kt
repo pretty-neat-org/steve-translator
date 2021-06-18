@@ -33,8 +33,6 @@ class MainActivity : AppCompatActivity() {
                                 nav_host_fragment.childFragmentManager.fragments[0] as PhotoFragment
 
                             fragment.addPhoto(uri)
-
-                            upload(uri)
                         }
                     }
                 } catch (e: IOException) {
@@ -48,8 +46,4 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
-    fun upload(uri: Uri){
-        UploadUtility(this).uploadFile(uri) // Either Uri, File or String file path
-    }
 }
