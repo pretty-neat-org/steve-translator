@@ -4,10 +4,11 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/steve"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -24,7 +25,7 @@
             android:theme="@style/Base.Theme.AppCompat"/>
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.crystalpigeon.photo_manipulation_app.fileprovider"
+            android:authorities="com.example.myapplication.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

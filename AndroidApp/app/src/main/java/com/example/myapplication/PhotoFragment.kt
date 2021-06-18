@@ -7,10 +7,12 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
+import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
@@ -22,11 +24,13 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
+
 class PhotoFragment : Fragment(R.layout.fragment_photo) {
 
     private val PICK_IMAGE = 1
     private val TAKE_PHOTO = 2
-    private var currentPhotoPath: String? = null
+    private var currentPhotoPath: String = ""
+    internal var imageUploadURL = "http://localhost:8080/upload"
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,7 +46,14 @@ class PhotoFragment : Fragment(R.layout.fragment_photo) {
                 }
                 .show()
         }
+//        btn_translate.setOnClickListener {
+//
+//
+//
+//        }
     }
+
+
 
     private fun pickPhoto(code: Int) {
         Intent(
@@ -86,6 +97,8 @@ class PhotoFragment : Fragment(R.layout.fragment_photo) {
         }
     }
 
+
+
     private fun takePhoto(code: Int, context: Context) {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
             takePictureIntent.resolveActivity(context.packageManager)?.also {
@@ -97,7 +110,7 @@ class PhotoFragment : Fragment(R.layout.fragment_photo) {
                 photoFile?.also {
                     val photoURI: Uri = FileProvider.getUriForFile(
                         context,
-                        "com.crystalpigeon.photo_manipulation_app.fileprovider",
+                        "com.example.myapplication.fileprovider",
                         it
                     )
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
@@ -118,5 +131,6 @@ class PhotoFragment : Fragment(R.layout.fragment_photo) {
             currentPhotoPath = absolutePath
         }
     }
+
 
 }

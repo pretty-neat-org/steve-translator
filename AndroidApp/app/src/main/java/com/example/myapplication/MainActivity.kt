@@ -2,9 +2,12 @@ package com.example.myapplication
 
 import android.app.Activity
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import com.theartofdev.edmodo.cropper.CropImage
 import java.io.IOException
 import java.io.InputStream
@@ -16,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
     }
 
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             val result = CropImage.getActivityResult(data)
@@ -29,6 +33,8 @@ class MainActivity : AppCompatActivity() {
                                 nav_host_fragment.childFragmentManager.fragments[0] as PhotoFragment
 
                             fragment.addPhoto(uri)
+
+                            upload(uri)
                         }
                     }
                 } catch (e: IOException) {
@@ -40,5 +46,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    fun upload(uri: Uri){
+        UploadUtility(this).uploadFile(uri) // Either Uri, File or String file path
     }
 }
