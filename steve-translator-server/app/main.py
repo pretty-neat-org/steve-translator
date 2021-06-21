@@ -33,4 +33,6 @@ def upload_file():
         find_text_areas(open_cv_image)
 
         return 'file uploaded successfully'
+    else:
+        return 'Welcome to Steve Translator Server'
 
