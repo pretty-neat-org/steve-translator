@@ -12,6 +12,11 @@ import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.View
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
+import android.widget.Spinner
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
@@ -24,13 +29,15 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
+var language = "en"
 
 class PhotoFragment : Fragment(R.layout.fragment_photo) {
 
     private val PICK_IMAGE = 1
     private val TAKE_PHOTO = 2
     private var currentPhotoPath: String = ""
-    private lateinit var currPhotoURI: Uri
+    private  var currPhotoURI: Uri? = null
+
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -48,10 +55,42 @@ class PhotoFragment : Fragment(R.layout.fragment_photo) {
                 .show()
         }
         btn_translate.setOnClickListener {
-
-            upload()
+            if (currPhotoURI!= null) {
+                upload()
+            }
 
         }
+
+        val spinner: Spinner = view.findViewById(R.id.spinner)
+        // Create an ArrayAdapter using the string array and a default spinner layout
+                ArrayAdapter.createFromResource(
+                    requireActivity(),
+                    R.array.languages_array,
+                    android.R.layout.simple_spinner_item
+                ).also { adapter ->
+                    // Specify the layout to use when the list of choices appears
+                    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                    // Apply the adapter to the spinner
+                    spinner.adapter = adapter
+                }
+        spinner.setOnItemSelectedListener(object : OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, pos: Int, id: Long) {
+                // An item was selected. You can retrieve the selected item using
+                language = parent.getItemAtPosition(pos) as String
+                showToast(language + " selected")
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+
+            }
+
+            fun showToast(message: String) {
+                requireActivity().runOnUiThread {
+                    Toast.makeText(  requireActivity(), message, Toast.LENGTH_LONG ).show()
+                }
+            }
+        })
+
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
@@ -59,7 +98,7 @@ class PhotoFragment : Fragment(R.layout.fragment_photo) {
         if (currPhotoURI != null) {
 //            val myFile = File(currentPhotoPath as String)
 //            val imgUri = Uri.fromFile(myFile)
-            UploadUtility((activity as MainActivity?)!!).uploadFile(currPhotoURI) // Either Uri, File or String file path
+            UploadUtility((activity as MainActivity?)!!).uploadFile(language, currPhotoURI!!) // Either Uri, File or String file path
         }
     }
 

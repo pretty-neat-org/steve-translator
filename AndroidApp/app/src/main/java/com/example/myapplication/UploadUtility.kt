@@ -23,17 +23,17 @@ class UploadUtility(activity: Activity) {
 //    var serverUploadDirectoryPath: String = "https://handyopinion.com/tutorials/uploads/"
     val client = OkHttpClient()
 
-    fun uploadFile(sourceFilePath: String, uploadedFileName: String? = null) {
-        uploadFile(File(sourceFilePath), uploadedFileName)
+    fun uploadFile(language:String, sourceFilePath: String, uploadedFileName: String? = null) {
+        uploadFile(language, File(sourceFilePath), uploadedFileName)
     }
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
-    fun uploadFile(sourceFileUri: Uri, uploadedFileName: String? = null) {
+    fun uploadFile(language:String, sourceFileUri: Uri, uploadedFileName: String? = null) {
         val pathFromUri = URIPathHelper().getPath(activity,sourceFileUri)
-        uploadFile(File(pathFromUri), uploadedFileName)
+        uploadFile(language, File(pathFromUri), uploadedFileName)
     }
 
-    fun uploadFile(sourceFile: File, uploadedFileName: String? = null) {
+    fun uploadFile(language:String, sourceFile: File, uploadedFileName: String? = null) {
         Thread {
             val mimeType = getMimeType(sourceFile);
             if (mimeType == null) {
@@ -48,7 +48,7 @@ class UploadUtility(activity: Activity) {
                         .addFormDataPart("uploaded_file", fileName,sourceFile.asRequestBody(mimeType.toMediaTypeOrNull()))
                         .build()
 
-                val request: Request = Request.Builder().url(serverURL).post(requestBody).build()
+                val request: Request = Request.Builder().url(serverURL+'-'+language).post(requestBody).build()
 
                 val response: Response = client.newCall(request).execute()
 
