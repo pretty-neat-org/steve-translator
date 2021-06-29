@@ -12,16 +12,22 @@ import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 class UploadUtility(activity: Activity) {
 
     var activity = activity;
     var dialog: ProgressDialog? = null
-    var serverURL: String = "http://localhost:8080/upload"
-    var serverUploadDirectoryPath: String = "http://localhost:8080/uploads"
-//    var serverURL: String = "https://handyopinion.com/tutorials/UploadToServer.php"
+    var serverURL: String = "https://steve-translator-server.herokuapp.com"
+    //var serverUploadDirectoryPath: String = "http://localhost:8080/uploads"
+ //   var serverURL: String = "https://handyopinion.com/tutorials/UploadToServer.php"
 //    var serverUploadDirectoryPath: String = "https://handyopinion.com/tutorials/uploads/"
-    val client = OkHttpClient()
+    val client = OkHttpClient.Builder()
+        .connectTimeout(60, TimeUnit.SECONDS)
+        .writeTimeout(60, TimeUnit.SECONDS)
+        .readTimeout(60, TimeUnit.SECONDS)
+        .build();
+
 
     fun uploadFile(language:String, sourceFilePath: String, uploadedFileName: String? = null) {
         uploadFile(language, File(sourceFilePath), uploadedFileName)
@@ -45,18 +51,23 @@ class UploadUtility(activity: Activity) {
             try {
                 val requestBody: RequestBody =
                     MultipartBody.Builder().setType(MultipartBody.FORM)
-                        .addFormDataPart("uploaded_file", fileName,sourceFile.asRequestBody(mimeType.toMediaTypeOrNull()))
+                        .addFormDataPart("file", fileName,sourceFile.asRequestBody(mimeType.toMediaTypeOrNull()))
                         .build()
 
-                val request: Request = Request.Builder().url(serverURL+'-'+language).post(requestBody).build()
+               // val request: Request = Request.Builder().url(serverURL+'-'+language).post(requestBody).build()
+                val request: Request = Request.Builder().url(serverURL).post(requestBody).build()
+
 
                 val response: Response = client.newCall(request).execute()
+                val data: String = response.body!!.string()
+
 
                 if (response.isSuccessful) {
-                    Log.d("File upload","success, path: $serverUploadDirectoryPath$fileName")
-                    showToast("File uploaded successfully at $serverUploadDirectoryPath$fileName")
+                    Log.d("File upload","success")
+                    showToast(data)
                 } else {
                     Log.e("File upload", "failed")
+                    Log.e("File upload", response.message)
                     showToast("File uploading failed")
                 }
             } catch (ex: Exception) {
