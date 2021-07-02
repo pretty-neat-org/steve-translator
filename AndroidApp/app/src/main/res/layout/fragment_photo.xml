@@ -9,7 +9,7 @@
         android:id="@+id/iv_photo"
         android:layout_width="300dp"
         android:layout_height="450dp"
-        android:scaleType="centerCrop"
+        android:scaleType="centerInside"
         android:src="@drawable/ic_profile"
         app:layout_constraintBottom_toTopOf="@+id/btn_change_photo"
         app:layout_constraintEnd_toEndOf="parent"
