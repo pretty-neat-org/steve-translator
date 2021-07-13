@@ -23,7 +23,9 @@ Mako==1.0.7
 MarkupSafe==1.0
 nemo-emblems==4.4.0
 netifaces==0.10.4
+numpy==1.19.5
 onboard==1.4.1
+opencv-python==4.5.2.54
 PAM==0.4.2
 pexpect==4.2.1
 Pillow==5.1.0
@@ -63,3 +65,5 @@ ufw==0.36
 Unidecode==1.0.22
 urllib3==1.22
 xkit==0.0.0
+pytesseract==0.3.8
+transformers~=4.8.2
