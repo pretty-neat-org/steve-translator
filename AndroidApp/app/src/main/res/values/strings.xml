@@ -4,4 +4,10 @@
     <string name="pick_image">Pick image</string>
     <string name="unable_to_open_image">Unable to open image</string>
     <string name="translate">Translate</string>
+    <string name="language_label">Menu language</string>
+    <string-array name="languages_array">
+        <item>ru</item>
+        <item>de</item>
+        <item>it</item>
+    </string-array>
 </resources>
